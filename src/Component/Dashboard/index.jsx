@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import userData from "../../data/users.json";
 import * as ss from "simple-statistics";
@@ -6,14 +6,23 @@ import "./Dashboard.css";
 
 function Dashboard() {
   const location = useLocation();
+  const navigate = useNavigate();
   const [mean, setMean] = useState(null);
   const [median, setMedian] = useState(null);
   const [mode, setMode] = useState(null);
+  const [selectedColumn, setSelectedColumn] = useState("");
 
   const params = new URLSearchParams(location.search);
   const selectedName = params.get("name");
 
+  useEffect(() => {
+    if (!selectedName) {
+      navigate("/");
+    }
+  }, [selectedName]);
+
   const calculateHandler = (field) => {
+    setSelectedColumn(field);
     const data = userData.users.map((user) => user[field]);
     setMean(ss.mean(data));
     setMedian(ss.median(data));
@@ -32,14 +41,18 @@ function Dashboard() {
                 <th scope="col">Name</th>
                 <th
                   scope="col"
-                  className="age"
+                  className={`cursor-pointer ${
+                    selectedColumn === "age" && "highlight"
+                  }`}
                   onClick={() => calculateHandler("age")}
                 >
                   Age
                 </th>
                 <th
                   scope="col"
-                  className="age"
+                  className={`cursor-pointer ${
+                    selectedColumn === "score" && "highlight"
+                  }`}
                   onClick={(e) => calculateHandler("score")}
                 >
                   Score
@@ -71,7 +84,7 @@ function Dashboard() {
           <div className="card-body">
             <ul className="list-group list-group-flush">
               <h2 className="d-flex justify-content-center">
-                Calculated value
+                Calculated value {selectedColumn}
               </h2>
               <li className="list-group-item">
                 {mean !== null && <p>Mean: {mean}</p>}

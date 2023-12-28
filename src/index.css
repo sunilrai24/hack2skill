@@ -1,3 +1,4 @@
 table tr.selected td {
   background-color: green;
+  color: #fff;
 }

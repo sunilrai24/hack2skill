@@ -1,6 +1,7 @@
-table .age:hover {
+table .cursor-pointer:hover {
   cursor: pointer;
 }
-table .score:hover {
-  cursor: pointer;
+
+table .highlight {
+  text-decoration: underline;
 }
