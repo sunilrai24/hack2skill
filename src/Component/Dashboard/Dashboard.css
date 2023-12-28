@@ -1,0 +1,6 @@
+table .age:hover {
+  cursor: pointer;
+}
+table .score:hover {
+  cursor: pointer;
+}
